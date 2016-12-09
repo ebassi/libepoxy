@@ -14,14 +14,14 @@ gen_dispatch = generator(gen_dispatch_py,
                          arguments: [ '--dir=@BUILD_DIR@', '@INPUT@' ])
 
 gl_generated = gen_dispatch.process(join_paths(meson.source_root(), 'registry/gl.xml'))
-gl_headers = [ join_paths(meson.source_root(), '/include/epoxy/gl.h'), 'gl_generated.h', ]
+gl_headers = [ join_paths(meson.source_root(), 'include/epoxy/gl.h'), 'gl_generated.h', ]
 gl_sources = gl_generated
 
 egl_headers = []
 egl_sources = []
 if build_egl
   egl_generated = gen_dispatch.process(join_paths(meson.source_root(), 'registry/egl.xml'))
-  egl_headers += [ join_paths(meson.source_root(), '/include/epoxy/egl.h'), 'egl_generated.h', ]
+  egl_headers += [ join_paths(meson.source_root(), 'include/epoxy/egl.h'), 'egl_generated.h', ]
   egl_sources += [ egl_generated, 'dispatch_egl.c', ]
 endif
 
@@ -29,7 +29,7 @@ glx_headers = []
 glx_sources = []
 if build_glx
   glx_generated = gen_dispatch.process(join_paths(meson.source_root(), 'registry/glx.xml'))
-  glx_headers += [ join_paths(meson.source_root(), '/include/epoxy/glx.h'), 'glx_generated.h', ]
+  glx_headers += [ join_paths(meson.source_root(), 'include/epoxy/glx.h'), 'glx_generated.h', ]
   glx_sources += [ glx_generated, 'dispatch_glx.c', ]
 endif
 
@@ -37,7 +37,7 @@ wgl_headers = []
 wgl_sources = []
 if build_wgl
   wgl_generated = gen_dispatch.process(join_paths(meson.source_root(), 'registry/wgl.xml'))
-  wgl_headers += [ join_paths(meson.source_root(), '/include/epoxy/wgl.h'), 'wgl_generated.h', ]
+  wgl_headers += [ join_paths(meson.source_root(), 'include/epoxy/wgl.h'), 'wgl_generated.h', ]
   wgl_sources += [ wgl_generated, 'dispatch_wgl.c', ]
 endif
 
