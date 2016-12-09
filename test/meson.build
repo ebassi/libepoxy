@@ -119,14 +119,15 @@ if build_glx
       glx_egl_link_with = [ glx_common_lib, egl_common_lib ]
 
       glx_egl_tests = [
-        [ 'egl_and_glx_different_pointers_glx', [ '-DUSE_GLX' ] ],
-        [ 'egl_and_glx_different_pointers_egl', [ '-DUSE_EGL' ] ],
-#       [ 'egl_and_glx_different_pointers_egl_glx', [ '-DUSE_EGL', '-DUSE_GLX' ] ], -- XFAIL
+        [ 'egl_and_glx_different_pointers_glx', [ '-DUSE_GLX' ], false ],
+        [ 'egl_and_glx_different_pointers_egl', [ '-DUSE_EGL' ], false ],
+        [ 'egl_and_glx_different_pointers_egl_glx', [ '-DUSE_EGL', '-DUSE_GLX' ], true ],
       ]
 
       foreach test: glx_egl_tests
         test_name = test[0]
         test_c_args = test[1]
+        test_should_fail = test[2]
 
         test_bin = executable(test_name, glx_egl_sources,
                               c_args: common_cflags + test_c_args,
@@ -134,7 +135,7 @@ if build_glx
                               dependencies: glx_egl_deps,
                               link_with: glx_egl_link_with,
                               link_args: glx_egl_link_flags)
-        test(test_name, test_bin)
+        test(test_name, test_bin, should_fail: test_should_fail)
       endforeach
     endif
   endif
