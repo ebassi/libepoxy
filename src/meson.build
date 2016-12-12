@@ -41,7 +41,11 @@ if build_wgl
   wgl_sources += [ wgl_generated, 'dispatch_wgl.c', ]
 endif
 
-common_ldflags = [ '-Bsymbolic', ]
+if cc.get_id() == 'msvc'
+  common_ldflags = []
+else
+  common_ldflags = [ '-Wl,-Bsymbolic', ]
+endif
 
 libepoxy_inc = [ epoxy_include, include_directories('.'), ]
 
