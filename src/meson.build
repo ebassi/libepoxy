@@ -47,6 +47,12 @@ else
   common_ldflags = [ '-Wl,-Bsymbolic', ]
 endif
 
+epoxy_deps = [ dl_dep, ]
+if host_system == 'windows'
+  ogl_dep = cc.find_library('opengl32', required: true)
+  epoxy_deps += [ ogl_dep, ]
+endif
+
 libepoxy_inc = [ epoxy_include, include_directories('.'), ]
 
 # Allow building a static version of epoxy
@@ -56,7 +62,7 @@ if libtype != 'shared'
   libepoxy_static = static_library('epoxy',
                                    common_sources + [ gl_sources, egl_sources, glx_sources, wgl_sources ],
                                    install: true,
-                                   dependencies: dl_dep,
+                                   dependencies: epoxy_deps,
                                    include_directories: libepoxy_inc,
                                    c_args: common_cflags,
                                    link_args: common_ldflags)
@@ -68,7 +74,7 @@ if libtype != 'static'
                                    sources: common_sources + [ gl_sources, egl_sources, glx_sources, wgl_sources ],
                                    version: '0.0.0',
                                    install: true,
-                                   dependencies: dl_dep,
+                                   dependencies: epoxy_deps,
                                    include_directories: libepoxy_inc,
                                    c_args: common_cflags,
                                    link_args: common_ldflags)
