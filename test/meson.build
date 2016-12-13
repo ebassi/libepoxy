@@ -166,11 +166,9 @@ if build_wgl
     test_bin = executable(test_name, test_source,
                           c_args: test_cflags + test_c_args,
                           include_directories: libepoxy_inc,
-                          dependencies: [ libepoxy_dep, gdi_dep ],
+                          dependencies: [ libepoxy_dep ],
                           link_with: wgl_common_lib)
 
-    if test_run
-      test(test_name, test_bin)
-    endif
+    test(test_name, test_bin)
   endforeach
 endif
