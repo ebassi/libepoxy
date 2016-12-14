@@ -879,5 +879,14 @@ for file in args.files:
 
     generator.prepare_provider_enum()
 
+    try:
+        os.mkdir(incdir)
+    except OSError:
+        pass
     generator.write_header(os.path.join(incdir, name + '_generated.h'))
+
+    try:
+        os.mkdir(srcdir)
+    except OSError:
+        pass
     generator.write_source(os.path.join(srcdir, name + '_generated_dispatch.c'))

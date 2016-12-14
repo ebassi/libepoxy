@@ -101,7 +101,7 @@ x11_dep = dependency('x11', required: false)
 gles1_dep = cc.find_library('libGLESv1_CM', required: false)
 gles2_dep = cc.find_library('libGLESv2', required: false)
 
-epoxy_include = include_directories('include')
+libepoxy_inc = include_directories('include')
 
 # PkgConfig file
 pkgconf = configuration_data()
@@ -120,5 +120,6 @@ configure_file(input: 'epoxy.pc.in',
                install: true,
                install_dir: join_paths(epoxy_libdir, 'pkgconfig'))
 
+subdir('include')
 subdir('src')
 subdir('test')

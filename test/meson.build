@@ -10,10 +10,12 @@ test_cflags = common_cflags + [
 # Unconditionally built tests
 test('header_guards',
      executable('header guards', 'headerguards.c',
+                dependencies: libepoxy_dep,
                 c_args: common_cflags,
                 include_directories: libepoxy_inc))
 test('misc_defines',
      executable('misc defines', 'miscdefines.c',
+                dependencies: libepoxy_dep,
                 c_args: common_cflags,
                 include_directories: libepoxy_inc))
 test('khronos_typedefs',
@@ -22,6 +24,7 @@ test('khronos_typedefs',
                   'khronos_typedefs.h',
                   'khronos_typedefs_nonepoxy.c',
                 ],
+                dependencies: libepoxy_dep,
                 c_args: common_cflags,
                 include_directories: libepoxy_inc))
 
