@@ -30,25 +30,42 @@ conf.set_quoted('PACKAGE_LOCALEDIR', join_paths(get_option('prefix'), get_option
 conf.set_quoted('PACKAGE_LIBEXECDIR', join_paths(get_option('prefix'), get_option('libexecdir')))
 conf.set('HAVE_KHRPLATFORM_H', cc.has_header('KHR/khrplatform.h', required: false))
 
+enable_x11 = get_option('enable-x11')
+if enable_x11 == 'auto'
+  if host_system == 'windows'
+    build_x11 = false
+  elif host_system == 'darwin'
+    build_x11 = false
+  else
+    build_x11 = true
+  endif
+elif enable_x11 == 'yes'
+  build_x11 = true
+elif enable_x11 == 'no'
+  build_x11 = false
+endif
+
 if host_system == 'windows'
-  build_glx = false
+  build_glx = build_x11
   build_egl = false
   build_apple = false
   build_wgl = true
   has_znow = true
 elif host_system == 'darwin'
-  build_glx = false
+  build_glx = build_x11
   build_egl = false
   build_apple = true
   build_wgl = false
   has_znow = false
 else
-  build_glx = true
+  build_glx = build_x11
   build_egl = true
   build_apple = false
   build_wgl = false
   has_znow = true
 endif
+
+conf.set10('ENABLE_GLX', build_glx)
 
 # Compiler flags, taken from the Xorg macros
 test_cflags = [

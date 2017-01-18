@@ -1,0 +1,5 @@
+option('enable-x11',
+       type: 'combo',
+       choices: [ 'auto', 'yes', 'no' ],
+       value: 'auto',
+       description: 'Enable GLX support')
