@@ -58,12 +58,37 @@ AC_CHECK_HEADER([KHR/khrplatform.h],
 # uintptr_t to a void *") by default.  Kill that.
 XORG_TESTSET_CFLAG(CWARNFLAGS, [-Wno-int-conversion])
 
+AC_ARG_ENABLE([x11],
+              [AC_HELP_STRING([--enable-x11=@<:@auto,yes,no@:>@], [Enable GLX support @<:@default=auto@:>@])],
+              [enable_x11=$enableval],
+              [enable_x11=auto])
+
+AS_CASE([$enable_x11],
+  [auto], [
+    AS_CASE([$host_os],
+            [mingw*], [build_x11=no],
+            [darwin*], [build_x11=no],
+            [android*], [build_x11=no],
+            [build_x11=yes])
+  ],
+
+  [yes], [
+    build_x11=yes
+  ],
+
+  [no], [
+    build_x11=no
+  ],
+
+  [AC_MSG_ERROR([Invalid value "$enable_x11" for option "--enable-x11"])]
+])
+
 has_znow=yes
 
 case $host_os in
     mingw*)
         build_egl=no
-        build_glx=no
+        build_glx=$build_x11
         build_wgl=yes
         # On windows, the DLL has to have all of its functions
         # resolved at link time, so we have to link directly aginst
@@ -78,7 +103,7 @@ case $host_os in
         ;;
     darwin*)
         build_egl=no
-        build_glx=no
+        build_glx=$build_x11
         build_wgl=no
         build_apple=yes
         has_znow=no
@@ -86,7 +111,7 @@ case $host_os in
         ;;
     *)
         build_egl=yes
-        build_glx=yes
+        build_glx=$build_x11
         build_wgl=no
         # On platforms with dlopen, we load everything dynamically and
         # don't link against a specific window system or GL implementation.
