@@ -25,6 +25,8 @@
  *
  * Provides an implementation of a GL dispatch layer using either
  * global function pointers or a hidden vtable.
+ *
+ * You should include `<epoxy/gl.h>` instead of `<GL/gl.h>` and `<GL/glext.h>`.
  */
 
 #ifndef EPOXY_GL_H
@@ -93,8 +95,41 @@ extern "C" {
 
 #include "epoxy/gl_generated.h"
 
+/**
+ * @brief Returns true if the given GL extension is supported in the current context.
+ *
+ * @param ext The name of the GL extension
+ * @return `true` if the extension is available
+ *
+ * @note that this function can't be called from within `glBegin()` and `glEnd()`.
+ *
+ * @see epoxy_has_egl_extension()
+ * @see epoxy_has_glx_extension()
+ */
 EPOXY_IMPORTEXPORT bool epoxy_has_gl_extension(const char *extension);
+
+/**
+ * @brief Checks whether we're using OpenGL or OpenGL ES
+ *
+ * @return `true` if we're using OpenGL
+ */
 EPOXY_IMPORTEXPORT bool epoxy_is_desktop_gl(void);
+
+/**
+ * @brief Returns the version of OpenGL we are using
+ *
+ * The version is encoded as:
+ *
+ * ```
+ *
+ *   version = major * 10 + minor
+ *
+ * ```
+ *
+ * So it can be easily used for version comparisons.
+ *
+ * @return The encoded version of OpenGL we are using
+ */
 EPOXY_IMPORTEXPORT int epoxy_gl_version(void);
 
 #ifdef __cplusplus
